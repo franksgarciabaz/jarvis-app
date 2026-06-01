@@ -1,24 +1,26 @@
 {
   "name": "jarvis-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JARVIS — Just A Rather Very Intelligent System",
   "main": "index.js",
   "scripts": {
     "sync": "npx cap sync",
+    "generate": "node generate-assets.mjs",
     "add:android": "npx cap add android",
     "open:android": "npx cap open android"
   },
   "keywords": ["jarvis", "ai", "assistant", "amzbyte"],
   "author": "Frank Garcia",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "@capacitor/android": "^8.3.4",
     "@capacitor/app": "^8.1.0",
     "@capacitor/cli": "^8.3.4",
     "@capacitor/core": "^8.3.4",
     "@capacitor/splash-screen": "^8.0.1",
-    "@capacitor/status-bar": "^8.0.2"
+    "@capacitor/status-bar": "^8.0.2",
+    "canvas": "^3.2.3"
   },
   "devDependencies": {
     "typescript": "^6.0.3"
