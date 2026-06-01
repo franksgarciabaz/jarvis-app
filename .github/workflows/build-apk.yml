@@ -31,15 +31,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Generate JARVIS icons & splash
+      - name: Generate JARVIS icons and splash
         run: node generate-assets.mjs
 
       - name: Fix app name in strings.xml
         run: |
-          sed -i 's|<string name="app_name">.*</string>|<string name="app_name">JARVIS</string>|g' \
-            android/app/src/main/res/values/strings.xml
-          sed -i 's|<string name="title_activity_main">.*</string>|<string name="title_activity_main">JARVIS</string>|g' \
-            android/app/src/main/res/values/strings.xml
+          sed -i 's|<string name="app_name">.*</string>|<string name="app_name">JARVIS</string>|g' android/app/src/main/res/values/strings.xml
+          sed -i 's|<string name="title_activity_main">.*</string>|<string name="title_activity_main">JARVIS</string>|g' android/app/src/main/res/values/strings.xml
 
       - name: Create assets directory
         run: mkdir -p android/app/src/main/assets
@@ -49,10 +47,8 @@ jobs:
 
       - name: Restore app name after cap sync
         run: |
-          sed -i 's|<string name="app_name">.*</string>|<string name="app_name">JARVIS</string>|g' \
-            android/app/src/main/res/values/strings.xml
-          sed -i 's|<string name="title_activity_main">.*</string>|<string name="title_activity_main">JARVIS</string>|g' \
-            android/app/src/main/res/values/strings.xml
+          sed -i 's|<string name="app_name">.*</string>|<string name="app_name">JARVIS</string>|g' android/app/src/main/res/values/strings.xml
+          sed -i 's|<string name="title_activity_main">.*</string>|<string name="title_activity_main">JARVIS</string>|g' android/app/src/main/res/values/strings.xml
 
       - name: Make gradlew executable
         run: chmod +x android/gradlew
@@ -67,7 +63,7 @@ jobs:
           path: android/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
 
-      - name: Build Release APK (unsigned)
+      - name: Build Release APK
         run: cd android && ./gradlew assembleRelease
 
       - name: Upload Release APK
@@ -77,20 +73,11 @@ jobs:
           path: android/app/build/outputs/apk/release/app-release-unsigned.apk
           retention-days: 90
 
-      - name: Create GitHub Release
+      - name: Publish GitHub Release
         if: success()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION="v1.0.${{ github.run_number }}"
-          cp android/app/build/outputs/apk/debug/app-debug.apk JARVIS-${VERSION}.apk
-          gh release create ${VERSION} JARVIS-${VERSION}.apk \
-            --title "JARVIS ${VERSION}" \
-            --notes "Build automático #${{ github.run_number }}
-
-**Como instalar:**
-1. Baixe o APK abaixo
-2. Android: Configurações → Segurança → Permitir fontes desconhecidas
-3. Abra o APK e instale
-
-**Novidades:** Ícone JARVIS arc-reactor + botão de forçar atualização"
+          cp android/app/build/outputs/apk/debug/app-debug.apk "JARVIS-${VERSION}.apk"
+          gh release create "${VERSION}" "JARVIS-${VERSION}.apk" --title "JARVIS ${VERSION}" --notes "Build automatico numero ${{ github.run_number }}"
