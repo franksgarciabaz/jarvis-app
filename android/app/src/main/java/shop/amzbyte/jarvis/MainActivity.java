@@ -1,4 +1,4 @@
-﻿package shop.amzbyte.jarvis;
+package shop.amzbyte.jarvis;
 
 import com.getcapacitor.BridgeActivity;
 
